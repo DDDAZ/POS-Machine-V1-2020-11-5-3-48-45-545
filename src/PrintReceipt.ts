@@ -2,21 +2,11 @@ import { loadAllItems, loadPromotions } from './Dependencies'
 import { Data, Item } from './item'
 
 export function printReceipt(tags: string[]): string {
-  //   return `***<store earning no money>Receipt ***
-  // Name：Sprite，Quantity：5 bottles，Unit：3.00(yuan)，Subtotal：12.00(yuan)
-  // Name：Litchi，Quantity：2.5 pounds，Unit：15.00(yuan)，Subtotal：37.50(yuan)
-  // Name：Instant Noodles，Quantity：3 bags，Unit：4.50(yuan)，Subtotal：9.00(yuan)
-  // ----------------------
-  // Total：58.50(yuan)
-  // Discounted prices：7.50(yuan)
-  // **********************`
-
   const items = getFinalItems(tags, loadAllItems())
   const text = render(items)
 
   return text
 }
-
 
 function render(items: Data[]): string {
   let total = 0
@@ -43,7 +33,6 @@ function renderSingleItem(item: Data, subtotal: number): string {
 }
 
 function getFinalItems(tags: string[], items: Item[]): Data[] {
-
   const itemsBuy: Item[] = []
   const tagsFiltered = tags
     .reduce((current, code) => current.includes(code.slice(0, 10)) ? current : [...current, code.slice(0, 10)], [tags[0]])
@@ -56,10 +45,9 @@ function getFinalItems(tags: string[], items: Item[]): Data[] {
   })
 
   const counts = getItemsCount(tags, tagsFiltered)
-
   const itemInPromotions = getBarcodeInPromotions(tagsFiltered, loadPromotions()[0].barcodes)
-
   const finalItems: Data[] = []
+
   itemsBuy.map((item, index) => finalItems.push({
     item: item,
     count: counts[index],
@@ -71,6 +59,7 @@ function getFinalItems(tags: string[], items: Item[]): Data[] {
 
 function getItemsCount(tags: string[], tagsFiltered: string[]): number[] {
   const itemsCount: number[] = []
+
   tagsFiltered.map(tag => {
     let count = 0
     for (let j = 0; j < tags.length; j++) {
